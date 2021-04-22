@@ -1,32 +1,9 @@
 import java.util.Scanner;
 
 public class AddressBook {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-	public static void main(String[] args) {
-		ContactPerson contactPerson = new ContactPerson();
-||||||| 21e3082
-	
-	public static void main(String[] args) {
-		ContactPerson contactPerson = new ContactPerson();
-=======
-
-    public static void main(String[] args) {
-        ContactPerson contactPerson = new ContactPerson();
->>>>>>> UC4-Delete-Contact
-        // List<ContactPersonUC2> contact = new ArrayList<>();;;;
-||||||| 0c11299
-	
-	public static void main(String[] args) {
-		ContactPerson contactPerson = new ContactPerson();
-        // List<ContactPersonUC2> contact = new ArrayList<>();
-=======
-
     public static void main(String[] args) {
         ContactPerson contactPerson = new ContactPerson();
         // List<ContactPersonUC2> contact = new ArrayList<>();
->>>>>>> UC3-Update-Contact
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to the Address Book Menu");
         boolean isAlive = true;
@@ -35,9 +12,9 @@ public class AddressBook {
             System.out.println();
             System.out.println("Enter choice: ");
             System.out.println("1. For Add a new Contact to AddressBook.");
-            System.out.println("2. For Display Contact Detial.");
-            System.out.println("3. For Updating Contact Detial.");
-            System.out.println("4. For Deleting Contact Detial.");
+            System.out.println("2. For Display Contact Detail.");
+            System.out.println("3. For Updating Contact Detail.");
+            System.out.println("4. For Deleting Contact Detail.");
             System.out.println("5. For Exit.");
             System.out.print("Enter choice: ");
             int choice = sc.nextInt();
