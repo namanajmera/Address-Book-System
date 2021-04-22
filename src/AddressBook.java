@@ -4,7 +4,7 @@ public class AddressBook {
 	
 	public static void main(String[] args) {
 		ContactPerson contactPerson = new ContactPerson();
-        // List<ContactPersonUC2> contact = new ArrayList<>();
+        // List<ContactPersonUC2> contact = new ArrayList<>();;;;
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to the Address Book Menu");
         boolean isAlive = true;
