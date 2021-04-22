@@ -2,9 +2,19 @@ import java.util.Scanner;
 
 public class AddressBook {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 	public static void main(String[] args) {
 		ContactPerson contactPerson = new ContactPerson();
+||||||| 21e3082
+	
+	public static void main(String[] args) {
+		ContactPerson contactPerson = new ContactPerson();
+=======
+
+    public static void main(String[] args) {
+        ContactPerson contactPerson = new ContactPerson();
+>>>>>>> UC4-Delete-Contact
         // List<ContactPersonUC2> contact = new ArrayList<>();;;;
 ||||||| 0c11299
 	
@@ -157,16 +167,22 @@ public class AddressBook {
                     System.out.println("Address book is Already Empty.");
                     break;
                 } else {
-                    contactPerson.setFirst_name(" ");
-                    contactPerson.setLast_name(" ");
-                    contactPerson.setAddress(" ");
-                    contactPerson.setCity(" ");
-                    contactPerson.setState(" ");
-                    contactPerson.setZip(0);
-                    contactPerson.setPhone_number(0);
-                    contactPerson.setEmail(" ");
+                    System.out.println("Enter the name you want to update:- ");
+                    String name = sc.nextLine();
+                    if (name.equalsIgnoreCase(contactPerson.getFirst_name())) {
+                        contactPerson.setFirst_name(" ");
+                        contactPerson.setLast_name(" ");
+                        contactPerson.setAddress(" ");
+                        contactPerson.setCity(" ");
+                        contactPerson.setState(" ");
+                        contactPerson.setZip(0);
+                        contactPerson.setPhone_number(0);
+                        contactPerson.setEmail(" ");
 
-                    System.out.println("Contact is deleted.");
+                        System.out.println("Contact is deleted.");
+                    } else {
+                        System.out.println("There is no contact with " + name + ".");
+                    }
                 }
                 break;
 
