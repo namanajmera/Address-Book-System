@@ -22,7 +22,7 @@ public class ContactPerson {
     }
 
     ContactPerson() {
-        this("", "", "", "", "", 0, 0, "");
+        this(" ", " ", " ", " ", " ", 0, 0, " ");
     }
 
     // Setter Method
