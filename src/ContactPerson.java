@@ -93,9 +93,9 @@ public class ContactPerson {
     }
 
     public String toString() {
-        return "Person Details: \tFirst name:" + this.first_name + " \tLast name:" + this.last_name + " \t Address:"
-                + this.address + " \tCity:" + this.city + " \tState:" + this.state + " \tZip:" + this.zip
-                + " \tPhone Number:" + this.phone_number + " \tEmail:" + this.email;
+        return "Person Details: \t \nFirst name:" + this.first_name + " \t \nLast name:" + this.last_name
+                + " \t \nAddress:" + this.address + " \t \nCity:" + this.city + " \t \nState:" + this.state
+                + " \t \nZip:" + this.zip + " \t \nPhone Number:" + this.phone_number + " \t \nEmail:" + this.email;
     }
 
 }

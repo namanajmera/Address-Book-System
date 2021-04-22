@@ -15,7 +15,8 @@ public class AddressBook {
             System.out.println("1. For Add a new Contact to AddressBook.");
             System.out.println("2. For Display Contact Detial.");
             System.out.println("3. For Updating Contact Detial.");
-            System.out.println("4. For Exit.");
+            System.out.println("4. For Deleting Contact Detial.");
+            System.out.println("5. For Exit.");
             System.out.print("Enter choice: ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -39,7 +40,6 @@ public class AddressBook {
                 sc.nextLine();
                 System.out.println("Enter the email:-");
                 contactPerson.setEmail(sc.nextLine());
-                isAlive = true;
                 System.out.println("Contact is added successfully.");
 
                 // contact.add(new ContactPersonUC2(contactPerson.getFirst_name(),
@@ -127,13 +127,33 @@ public class AddressBook {
                 break;
 
             case 4:
+                if (contactPerson.getFirst_name() == " " && contactPerson.getLast_name() == " "
+                        && contactPerson.getAddress() == " " && contactPerson.getCity() == " "
+                        && contactPerson.getState() == " " && contactPerson.getZip() == 0
+                        && contactPerson.getPhone_number() == 0 && contactPerson.getEmail() == " ") {
+                    System.out.println("Address book is Already Empty.");
+                    break;
+                } else {
+                    contactPerson.setFirst_name(" ");
+                    contactPerson.setLast_name(" ");
+                    contactPerson.setAddress(" ");
+                    contactPerson.setCity(" ");
+                    contactPerson.setState(" ");
+                    contactPerson.setZip(0);
+                    contactPerson.setPhone_number(0);
+                    contactPerson.setEmail(" ");
+
+                    System.out.println("Contact is deleted.");
+                }
+                break;
+
+            case 5:
                 isAlive = false;
                 System.out.println("Exit.....");
                 break;
 
             default:
                 System.out.println("You have entered wrong choice.");
-                isAlive = true;
                 break;
             }
         }
