@@ -1,10 +1,22 @@
 import java.util.Scanner;
 
 public class AddressBook {
+<<<<<<< HEAD
 	
 	public static void main(String[] args) {
 		ContactPerson contactPerson = new ContactPerson();
         // List<ContactPersonUC2> contact = new ArrayList<>();;;;
+||||||| 0c11299
+	
+	public static void main(String[] args) {
+		ContactPerson contactPerson = new ContactPerson();
+        // List<ContactPersonUC2> contact = new ArrayList<>();
+=======
+
+    public static void main(String[] args) {
+        ContactPerson contactPerson = new ContactPerson();
+        // List<ContactPersonUC2> contact = new ArrayList<>();
+>>>>>>> UC3-Update-Contact
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to the Address Book Menu");
         boolean isAlive = true;
@@ -70,58 +82,69 @@ public class AddressBook {
                     System.out.println("Address book is Empty. Firstly add the contact.");
                     break;
                 } else {
-                    boolean isUpdate = true;
-                    while (isUpdate) {
-                        System.out.println(contactPerson.toString());
-                        System.out.print("Enter the index number you want to update form 0 to 7:  ");
-                        int index = sc.nextInt();
-                        sc.nextLine();
-                        switch (index) {
-                        case 0:
-                            System.out.println("Update the first_name:-");
-                            contactPerson.setFirst_name(sc.nextLine());
-                            break;
-                        case 1:
-                            System.out.println("Update the last_name:-");
-                            contactPerson.setLast_name(sc.nextLine());
-                            break;
-                        case 2:
-                            System.out.println("Update the address:-");
-                            contactPerson.setAddress(sc.nextLine());
-                            break;
-                        case 3:
-                            System.out.println("Update the city:-");
-                            contactPerson.setCity(sc.nextLine());
-                            break;
-                        case 4:
-                            System.out.println("Update the state:-");
-                            contactPerson.setState(sc.nextLine());
-                            break;
-                        case 5:
-                            System.out.println("Update the zip:-");
-                            contactPerson.setZip(sc.nextInt());
-                            break;
-                        case 6:
-                            System.out.println("Update the phone_number:-");
-                            contactPerson.setPhone_number(sc.nextLong());
+                    System.out.println("Enter the name you want to update:- ");
+                    String name = sc.nextLine();
+                    if (name.equalsIgnoreCase(contactPerson.getFirst_name())) {
+                        boolean isUpdate = true;
+                        while (isUpdate) {
+                            System.out.println(contactPerson.toString());
+                            System.out.print("Enter the index number you want to update form 0 to 7:  ");
+                            int index = sc.nextInt();
                             sc.nextLine();
-                            break;
-                        case 7:
-                            System.out.println("Update the email_id:-");
-                            contactPerson.setEmail(sc.nextLine());
-                            break;
+                            switch (index) {
+                            case 0:
+                                System.out.println("Update the first_name:-");
+                                contactPerson.setFirst_name(sc.nextLine());
+                                break;
+                            case 1:
+                                System.out.println("Update the last_name:-");
+                                contactPerson.setLast_name(sc.nextLine());
+                                break;
+                            case 2:
+                                System.out.println("Update the address:-");
+                                contactPerson.setAddress(sc.nextLine());
+                                break;
+                            case 3:
+                                System.out.println("Update the city:-");
+                                contactPerson.setCity(sc.nextLine());
+                                break;
+                            case 4:
+                                System.out.println("Update the state:-");
+                                contactPerson.setState(sc.nextLine());
+                                break;
+                            case 5:
+                                System.out.println("Update the zip:-");
+                                contactPerson.setZip(sc.nextInt());
+                                break;
+                            case 6:
+                                System.out.println("Update the phone_number:-");
+                                contactPerson.setPhone_number(sc.nextLong());
+                                sc.nextLine();
+                                break;
+                            case 7:
+                                System.out.println("Update the email_id:-");
+                                contactPerson.setEmail(sc.nextLine());
+                                break;
 
-                        default:
-                            System.out.println("You entered the wrong choice.");
-                            break;
+                            default:
+                                System.out.println("You entered the wrong choice.");
+                                break;
+                            }
+                            System.out.println("Want to update more..?? Yes or No");
+                            String ans = sc.next();
+                            String yes = "Yes";
+                            String no = "No";
+                            if (ans.equalsIgnoreCase(yes)) {
+                                isUpdate = true;
+                            } else if (ans.equalsIgnoreCase(no)) {
+                                isUpdate = false;
+                            } else {
+                                System.out.print("You Entered wrong input: ");
+                                isUpdate = true;
+                            }
                         }
-                        System.out.println("Want to update more..?? Yes or No");
-                        String ans = sc.next();
-                        if (ans == "Yes") {
-                            isUpdate = true;
-                        } else {
-                            isUpdate = false;
-                        }
+                    } else {
+                        System.out.println("Name not found in contact list.");
                     }
                 }
                 break;
@@ -160,5 +183,3 @@ public class AddressBook {
         sc.close();
     }
 }
-
-
