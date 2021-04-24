@@ -38,6 +38,7 @@ public class AddressBook {
                     person.setZip(Integer.parseInt(sc.nextLine()));
                     System.out.println("PhoneNo");
                     person.setPhone_number((sc.nextLong()));
+                    sc.nextLine();
                     System.out.println("Email");
                     person.setEmail(sc.nextLine());
 
