@@ -95,8 +95,8 @@ public class ContactPerson {
                 + email;
     }
 
-    public void setPin(int nextInt) {
+    // public void setPin(int nextInt) {
 
-    }
+    // }
 
 }
