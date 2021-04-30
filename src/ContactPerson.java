@@ -1,101 +1,95 @@
 
 public class ContactPerson {
-	private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String address;
     private String city;
     private String state;
-    private int zip;
-    private long phone_number;
+    private String zip;
+    private String phoneNumber;
     private String email;
 
-    ContactPerson(String first_name, String last_name, String address, String city, String state, int zip,
-            long phone_number, String email) {
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public ContactPerson(String firstName, String lastName, String address, String city, String state, String zip2,
+            String phoneNumber2, String email) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
         this.city = city;
         this.state = state;
-        this.zip = zip;
-        this.phone_number = phone_number;
+        this.zip = zip2;
+        this.phoneNumber = phoneNumber2;
         this.email = email;
     }
 
-    ContactPerson() {
-        this(" ", " ", " ", " ", " ", 0, 0, " ");
+    public String getFirstName() {
+        return firstName;
     }
 
-    // Setter Method
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZip(int zip) {
-        this.zip = zip;
-    }
-
-    public void setPhone_number(long phone_number) {
-        this.phone_number = phone_number;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    // Getter Method
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getCity() {
         return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getState() {
         return state;
     }
 
-    public int getZip() {
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZip() {
         return zip;
     }
 
-    public long getPhone_number() {
-        return phone_number;
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String toString() {
-        return "Person Details: \t \nFirst name:" + this.first_name + " \t \nLast name:" + this.last_name
-                + " \t \nAddress:" + this.address + " \t \nCity:" + this.city + " \t \nState:" + this.state
-                + " \t \nZip:" + this.zip + " \t \nPhone Number:" + this.phone_number + " \t \nEmail:" + this.email;
+        return "Details of: " + firstName + " " + lastName + "\n" + "Address: " + address + "\n" + "City: " + city
+                + "\n" + "State: " + state + "\n" + "Zip: " + zip + "\n" + "Phone Number: " + phoneNumber + "\n"
+                + "Email: " + email;
     }
 
 }
