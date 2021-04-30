@@ -1,101 +1,98 @@
 
 public class ContactPerson {
-	private String first_name;
-    private String last_name;
-    private String address;
-    private String city;
-    private String state;
-    private int zip;
-    private long phone_number;
-    private String email;
+    public String firstName;
+    public String lastName;
+    public String area;
+    public String city;
+    public String state;
+    public int pin;
+    public int phoneNumber;
+    public String email;
 
-    ContactPerson(String first_name, String last_name, String address, String city, String state, int zip,
-            long phone_number, String email) {
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.address = address;
+    public ContactPerson(String firstName, String lastName, String area, String city, String state, int pin,
+            int phoneNumber, String email) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.area = area;
         this.city = city;
         this.state = state;
-        this.zip = zip;
-        this.phone_number = phone_number;
+        this.pin = pin;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
 
-    ContactPerson() {
-        this(" ", " ", " ", " ", " ", 0, 0, " ");
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    // Setter Method
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String fname) {
+        this.firstName = firstName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLastName(String lname) {
+        this.lastName = lastName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public String getArea() {
+        return this.area;
     }
 
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZip(int zip) {
-        this.zip = zip;
-    }
-
-    public void setPhone_number(long phone_number) {
-        this.phone_number = phone_number;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    // Getter Method
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public String getAddress() {
-        return address;
+    public void setArea(String ar) {
+        this.area = area;
     }
 
     public String getCity() {
-        return city;
+        return this.city;
+    }
+
+    public void setCity(String cty) {
+        this.city = city;
     }
 
     public String getState() {
-        return state;
+        return this.state;
     }
 
-    public int getZip() {
-        return zip;
+    public void setState(String st) {
+        this.state = state;
     }
 
-    public long getPhone_number() {
-        return phone_number;
+    public int getPin() {
+        return this.pin;
+    }
+
+    public void setZip(int zp) {
+        this.pin = pin;
+    }
+
+    public int getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(int phn) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
+    }
+
+    public void setEmail(String eml) {
+        this.email = email;
     }
 
     public String toString() {
-        return "Person Details: \t \nFirst name:" + this.first_name + " \t \nLast name:" + this.last_name
-                + " \t \nAddress:" + this.address + " \t \nCity:" + this.city + " \t \nState:" + this.state
-                + " \t \nZip:" + this.zip + " \t \nPhone Number:" + this.phone_number + " \t \nEmail:" + this.email;
+        return "Details of: " + firstName + " " + lastName + "\n" + "Area: " + area + "\n" + "City: " + city + "\n"
+                + "State: " + state + "\n" + "Pin: " + pin + "\n" + "Phone Number: " + phoneNumber + "\n" + "Email: "
+                + email;
     }
 
+    public void setpin(int nextInt) {
+
+    }
 }
