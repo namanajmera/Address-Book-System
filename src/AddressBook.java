@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBook {
+    public static int indexNum;
     public static void main(String[] args) {
         System.out.println("Welcome to Address book Program !");
         ContactPerson person = new ContactPerson();
@@ -25,9 +26,19 @@ public class AddressBook {
                 switch (choice) {
                 case 1:
                     System.out.println("First name");
-                    person.setFirst_name(sc.nextLine());
+                    String first_name=sc.nextLine();
+                    person.setFirst_name(first_name);
                     System.out.println("Last Name");
-                    person.setLast_name(sc.nextLine());
+                    String last_name=sc.nextLine();
+                    person.setLast_name(last_name);
+//                    Checking the duplicate
+                    for (indexNum = 0; indexNum < contact.size(); indexNum++) {
+                        if (first_name.equals(contact.get(indexNum).getFirst_name()) && last_name.equals(contact.get(indexNum).getLast_name())) {
+                            System.out.println("Contact Name Exists");
+                            isAlive=true;
+                            break;
+                        }
+                    }
                     System.out.println("Address");
                     person.setAddress(sc.nextLine());
                     System.out.println("City");
@@ -49,10 +60,10 @@ public class AddressBook {
                     System.out.println("New address added to the book successfully !");
                     break;
                 case 2:
-                    if (ans == true) {
-                        System.out.println("Address Book is Empty. Please enter atleast one entry to update.");
+                    if (ans) {
+                        System.out.println("Address Book is Empty. Please enter at least one entry to update.");
                     } else {
-                        System.out.println("Please enter persone id to its update ?");
+                        System.out.println("Please enter person id to its update ?");
                         int etr = Integer.parseInt(sc.nextLine());
                         System.out.println("Update First name");
                         person.setFirst_name(sc.nextLine());
@@ -76,7 +87,7 @@ public class AddressBook {
                     }
                     break;
                 case 3:
-                    if (ans == true) {
+                    if (ans) {
                         System.out.println("Address Book is Empty. Please enter atleast one entry to delete");
                     } else {
                         System.out.println("Please enter persone id to delete its contact ?");
@@ -88,7 +99,7 @@ public class AddressBook {
                 case 4:
                     Iterator itr = contact.iterator();
 
-                    if (ans == true) {
+                    if (ans) {
                         System.out.println("Address Book is Empty. Please enter atleast one entry to display.");
                     } else {
                         while (itr.hasNext()) {
