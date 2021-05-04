@@ -53,11 +53,11 @@ public class AddressBookMain {
             System.out.println("6. Exit");
             System.out.println("Enter your choice : ");
             int choice = sc.nextInt();
-            sc.nextLine();
 
             switch (choice) {
                 case 1:
                     System.out.println("Enter name of Address Book: ");
+                    sc.nextLine();
                     String addressBookName = sc.nextLine();
                     AddressBook addressBookObjectForCreation = new AddressBook();
                     dictionaryObject.addressBookDictionary.put(addressBookName, addressBookObjectForCreation);
@@ -168,7 +168,5 @@ public class AddressBookMain {
                     System.out.println();
             }
         }
-
     }
-
 }
