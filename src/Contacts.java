@@ -103,27 +103,23 @@ public class Contacts {
 
 
     public String getFullName() {
-        return (firstName+" "+lastName);
+        return (firstName + " " + lastName);
     }
 
 
     @Override
     public String toString() {
-        return ("Name : "+firstName+" "+lastName+"\t"+"Address : "+ address+"\t"+"City : "+ city+"\t"+"State : "+state+"\t"+"Zip : "+zip+"\t"+"Phone Number : "+phoneNumber+"\t"+
-                "Email : "+ email);
+        return ("Name : " + firstName + " " + lastName + "\t" + "Address : " + address + "\t" + "City : " + city + "\t" + "State : " + state + "\t" + "Zip : " + zip + "\t" + "Phone Number : " + phoneNumber + "\t" +
+                "Email : " + email);
     }
 
     @Override
     public boolean equals(Object o) {
-        if(o==this)
+        if (o == this)
             return true;
-        if(!(o instanceof Contacts))
+        if (!(o instanceof Contacts))
             return false;
-        Contacts person=(Contacts)o;
+        Contacts person = (Contacts) o;
         return firstName.equals(person.firstName) && lastName.equals(person.lastName);
     }
-
-
-
-
 }

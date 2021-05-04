@@ -20,18 +20,23 @@ public class AddressBookMain {
 
     public AddressBookMain() {
         addressBookDictionary = new HashMap<String, AddressBook>();
-        allContactsByCity=new HashMap<String, HashSet<String>>();
-        allContactsByState=new HashMap<String, HashSet<String>>();
-        countContactsByCity=new HashMap<String, Integer>();
-        countContactsByState=new HashMap<String, Integer>();
-    }
-    public void getAllCities(){
-        addressBookDictionary.entrySet().stream().forEach(n -> {cityList.addAll(n.getValue().getCities());});
-    }
-    public void getAllStates(){
-        addressBookDictionary.entrySet().stream().forEach(n -> {stateList.addAll(n.getValue().getStates());});
+        allContactsByCity = new HashMap<String, HashSet<String>>();
+        allContactsByState = new HashMap<String, HashSet<String>>();
+        countContactsByCity = new HashMap<String, Integer>();
+        countContactsByState = new HashMap<String, Integer>();
     }
 
+    public void getAllCities() {
+        addressBookDictionary.entrySet().stream().forEach(n -> {
+            cityList.addAll(n.getValue().getCities());
+        });
+    }
+
+    public void getAllStates() {
+        addressBookDictionary.entrySet().stream().forEach(n -> {
+            stateList.addAll(n.getValue().getStates());
+        });
+    }
 
 
     public static void main(String[] args) {
@@ -53,7 +58,6 @@ public class AddressBookMain {
             switch (choice) {
                 case 1:
                     System.out.println("Enter name of Address Book: ");
-                    sc.nextLine();
                     String addressBookName = sc.nextLine();
                     AddressBook addressBookObjectForCreation = new AddressBook();
                     dictionaryObject.addressBookDictionary.put(addressBookName, addressBookObjectForCreation);
@@ -64,8 +68,8 @@ public class AddressBookMain {
                     String addressBookNameToOperate = sc.nextLine();
                     AddressBook addressBookObjectForOperations = dictionaryObject.addressBookDictionary.get(addressBookNameToOperate);
                     try {
-                        addressBookObjectForOperations.addressBookOperations();
-                        System.out.println("Entered Address Book -> "+addressBookNameToOperate);
+                        addressBookObjectForOperations.addressBookOperations(addressBookNameToOperate);
+                        System.out.println("Exited Address Book -> " + addressBookNameToOperate);
                     } catch (NullPointerException e1) {
                         System.out.println("Address Book -> " + addressBookNameToOperate + " doesn't exist in the Dictionary");
                     }
@@ -75,7 +79,7 @@ public class AddressBookMain {
                     sc.nextLine();
                     String addressBooknameForDeletion = sc.nextLine();
 
-                    if(dictionaryObject.addressBookDictionary.containsKey(addressBooknameForDeletion)) {
+                    if (dictionaryObject.addressBookDictionary.containsKey(addressBooknameForDeletion)) {
                         dictionaryObject.addressBookDictionary.remove(addressBooknameForDeletion);
                         System.out.println("Address Book Deleted");
                         System.out.println();
@@ -85,11 +89,11 @@ public class AddressBookMain {
                     break;
                 case 4:
                     System.out.print("Display All Address Book in the Dictionary (y/n) : ");
-                    String option=sc.next();
-                    switch(option) {
+                    String option = sc.next();
+                    switch (option) {
                         case "y":
                             System.out.println();
-                            for(Map.Entry<String, AddressBook> dictionaryInteratorObject : dictionaryObject.addressBookDictionary.entrySet()) {
+                            for (Map.Entry<String, AddressBook> dictionaryInteratorObject : dictionaryObject.addressBookDictionary.entrySet()) {
                                 System.out.println();
                                 System.out.println("Address Book -> " + dictionaryInteratorObject.getKey());
                                 dictionaryInteratorObject.getValue().displayAddressBook();
@@ -105,7 +109,7 @@ public class AddressBookMain {
                                 addressBookObjectForDisplay.displayAddressBook();
                                 System.out.println("Address Book -> " + addressBooknameForDisplay);
                                 System.out.println();
-                            }catch(NullPointerException e2) {
+                            } catch (NullPointerException e2) {
                                 System.out.println("Address Book -> " + addressBooknameForDisplay + " doesn't exist in the Dictionary");
                             }
                             break;
@@ -119,38 +123,40 @@ public class AddressBookMain {
                     System.out.println("3.Show Count by City");
                     System.out.println("4.Show Count by State");
                     System.out.println("Enter your choice :");
-                    int showPersonChoice=sc.nextInt();
-                    if(showPersonChoice==1 || showPersonChoice==3) {
+                    int showPersonChoice = sc.nextInt();
+                    if (showPersonChoice == 1 || showPersonChoice == 3) {
                         dictionaryObject.getAllCities();
-                        for(String city : dictionaryObject.cityList) {
-                            String key=city;
-                            HashSet<String> value=new HashSet<String>();
+                        for (String city : dictionaryObject.cityList) {
+                            String key = city;
+                            HashSet<String> value = new HashSet<String>();
                             dictionaryObject.addressBookDictionary.entrySet()
-                                    .forEach(addressBookIterator ->{value.addAll(addressBookIterator.getValue().searchContactByCity(key));});
-                            dictionaryObject.allContactsByCity.put(key,value);
-                            dictionaryObject.countContactsByCity.put(key,value.size());
+                                    .forEach(addressBookIterator -> {
+                                        value.addAll(addressBookIterator.getValue().searchContactByCity(key));
+                                    });
+                            dictionaryObject.allContactsByCity.put(key, value);
+                            dictionaryObject.countContactsByCity.put(key, value.size());
                         }
-                        if(showPersonChoice==1)
+                        if (showPersonChoice == 1)
                             System.out.println(dictionaryObject.allContactsByCity);
                         else
                             System.out.println(dictionaryObject.countContactsByCity);
-                    }
-                    else if(showPersonChoice==2 || showPersonChoice==4) {
+                    } else if (showPersonChoice == 2 || showPersonChoice == 4) {
                         dictionaryObject.getAllStates();
-                        for(String state : dictionaryObject.stateList) {
-                            String key=state;
-                            HashSet<String> value=new HashSet<String>();
+                        for (String state : dictionaryObject.stateList) {
+                            String key = state;
+                            HashSet<String> value = new HashSet<String>();
                             dictionaryObject.addressBookDictionary.entrySet()
-                                    .forEach(addressBookIterator ->{value.addAll(addressBookIterator.getValue().searchContactByState(key));});
-                            dictionaryObject.allContactsByState.put(key,value);
+                                    .forEach(addressBookIterator -> {
+                                        value.addAll(addressBookIterator.getValue().searchContactByState(key));
+                                    });
+                            dictionaryObject.allContactsByState.put(key, value);
                             dictionaryObject.countContactsByState.put(key, value.size());
                         }
-                        if(showPersonChoice==2)
+                        if (showPersonChoice == 2)
                             System.out.println(dictionaryObject.allContactsByState);
                         else
                             System.out.println(dictionaryObject.countContactsByState);
-                    }
-                    else {
+                    } else {
                         System.out.println("Invalid choice! Can't display Person");
                     }
                     break;

@@ -1,28 +1,33 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class AddressBook {
-    private ArrayList<Contacts> addressBook = new ArrayList<Contacts>();
-    private  HashSet<String> contactsByCity = new HashSet<String>();
-    private  HashSet<String> contactsByState =new HashSet<String>();
-    private  ArrayList<String> city=new ArrayList<String>();
-    private  ArrayList<String> state=new ArrayList<String>();
+    private List<Contacts> addressBook = new ArrayList<Contacts>();
+    private HashSet<String> contactsByCity = new HashSet<String>();
+    private HashSet<String> contactsByState = new HashSet<String>();
+    private ArrayList<String> city = new ArrayList<String>();
+    private ArrayList<String> state = new ArrayList<String>();
+
 
     public void addContactToAddressBook(Contacts contact) {
-        Predicate<Contacts> isPresent=n -> {return n.equals(contact);};
-        if(!addressBook.stream().anyMatch(isPresent))
+        Predicate<Contacts> isPresent = n -> {
+            return n.equals(contact);
+        };
+        if (!addressBook.stream().anyMatch(isPresent))
             addressBook.add(contact);
         else
             System.out.println("Duplicate Contact! Enter a new Contact or Edit exixting Contact");
     }
 
     public void displayAddressBook() {
-        addressBook.stream().forEach(n ->{System.out.println(n);} );
+        addressBook.stream().forEach(n -> System.out.println(n.toString()));
     }
 
     public void editContact(String fullName) {
@@ -119,23 +124,23 @@ public class AddressBook {
         addressBook.stream().filter(contact -> city.equalsIgnoreCase(contact.getCity())).forEach(contact -> contactsByCity.add(contact.getFullName()));
         return contactsByCity;
     }
+
     public HashSet<String> searchContactByState(String state) {
         contactsByState.clear();
         addressBook.stream().filter(contact -> state.equalsIgnoreCase(contact.getState())).forEach(contact -> contactsByState.add(contact.getFullName()));
         return contactsByState;
     }
 
-    public void addressBookOperations() {
-
+    public void addressBookOperations(String addressBookNameToOperate) {
 
         Scanner sc = new Scanner(System.in);
-
+        System.out.println("Entered Address Book -> " + addressBookNameToOperate);
         //Default Contacts Entry
-        Contacts defaultContact1 = new Contacts("Aditya", "Verma", "3/40 LDA Colony", "Lucknow", "UP", 224045,"8889036440", "addressbook1@capgemini.com");
+        Contacts defaultContact1 = new Contacts("Aditya", "Verma", "3/40 LDA Colony", "Lucknow", "UP", 224045, "8889036440", "addressbook1@capgemini.com");
         addContactToAddressBook(defaultContact1);
-        Contacts defaultContact2 = new Contacts("Ravi", "Sharma", "4/11 Gomti Nagar", "Lucknow", "UP", 225058,"8846576440", "addressbook2@capgemini.com");
+        Contacts defaultContact2 = new Contacts("Amit", "Sharma", "4/11 Gomti Nagar", "Lucknow", "UP", 225058, "8846576440", "addressbook2@capgemini.com");
         addContactToAddressBook(defaultContact2);
-        Contacts defaultContact3 = new Contacts("Arpit", "Jain", "8/22 Kalyan Nagar", "Kanpur", "UP", 289558,"8123476440", "addressbook3@capgemini.com");
+        Contacts defaultContact3 = new Contacts("Ashok", "Kumar", "8/22 Kalyan Nagar", "Kanpur", "UP", 289558, "8123476440", "addressbook3@capgemini.com");
         addContactToAddressBook(defaultContact3);
 
         boolean operate = true;
@@ -143,8 +148,9 @@ public class AddressBook {
             System.out.println("1. Create and Add Contact");
             System.out.println("2. Edit Contact");
             System.out.println("3. Delete Contact");
-            System.out.println("4. Display Address Book");
-            System.out.println("5. Exit");
+            System.out.println("4. Sort Address Book");
+            System.out.println("5. Display Address Book");
+            System.out.println("6. Exit");
             System.out.println("Enter your choice : ");
             int choice = sc.nextInt();
             sc.nextLine();
@@ -155,20 +161,21 @@ public class AddressBook {
                     break;
                 case 2:
                     System.out.println("Enter the Full Name : ");
-//                    sc.nextLine();
                     String fullName = sc.nextLine();
                     editContact(fullName);
                     break;
                 case 3:
                     System.out.println("Enter the Full Name : ");
-//                    sc.nextLine();
                     String name = sc.nextLine();
                     deleteContact(name);
                     break;
                 case 4:
-                    displayAddressBook();
+                    sortByPerson();
                     break;
                 case 5:
+                    displayAddressBook();
+                    break;
+                case 6:
                     operate = false;
                     break;
                 default:
@@ -177,12 +184,22 @@ public class AddressBook {
         }
     }
 
+    public void sortByPerson() {
+        addressBook = addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getFullName)).collect(Collectors.toList());
+        System.out.println("Address Book sorted by Person Name");
+    }
+
     public ArrayList<String> getCities() {
-        addressBook.stream().forEach(contact -> {city.add(contact.getCity());});
+        addressBook.stream().forEach(contact -> {
+            city.add(contact.getCity());
+        });
         return city;
     }
+
     public ArrayList<String> getStates() {
-        addressBook.stream().forEach(contact -> {state.add(contact.getState());});
+        addressBook.stream().forEach(contact -> {
+            state.add(contact.getState());
+        });
         return state;
     }
 
