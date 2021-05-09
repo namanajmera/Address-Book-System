@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookMain {
-
+    public static final String ADRESS_BOOK_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\Files";
     private Map<String, AddressBook> addressBookDictionary;
 
     private Map<String, HashSet<String>> allContactsByCity;
@@ -19,11 +24,21 @@ public class AddressBookMain {
     public HashSet<String> stateList = new HashSet<String>();
 
     public AddressBookMain() {
-        addressBookDictionary = new HashMap<String, AddressBook>();
+        initializeDictionary();
         allContactsByCity = new HashMap<String, HashSet<String>>();
         allContactsByState = new HashMap<String, HashSet<String>>();
         countContactsByCity = new HashMap<String, Integer>();
         countContactsByState = new HashMap<String, Integer>();
+    }
+
+    public void initializeDictionary() {
+        this.addressBookDictionary = new HashMap<String, AddressBook>();
+        Path dictionaryPath = Paths.get(ADRESS_BOOK_FILES);
+        File[] addressBookFiles = dictionaryPath.toFile().listFiles();
+        for (File file : addressBookFiles) {
+            AddressBookFileIOService fileReadObject = new AddressBookFileIOService(file.toPath());
+            this.addressBookDictionary.put(file.getName().replaceFirst("[.][^.]+$", ""), new AddressBook(fileReadObject.readData()));
+        }
     }
 
     public void getAllCities() {
@@ -38,14 +53,14 @@ public class AddressBookMain {
         });
     }
 
-
     public static void main(String[] args) {
 
+        Path addressBookPath = Paths.get(ADRESS_BOOK_FILES);
         Scanner sc = new Scanner(System.in);
         AddressBookMain dictionaryObject = new AddressBookMain();
         boolean operation = true;
         while (operation) {
-            System.out.println("1. Create and Add AddressBook");
+            System.out.println("1. Create AddressBook");
             System.out.println("2. Select AddressBook");
             System.out.println("3. Delete AddressBook");
             System.out.println("4. Display AddressBook");
@@ -59,19 +74,29 @@ public class AddressBookMain {
                     System.out.println("Enter name of Address Book: ");
                     sc.nextLine();
                     String addressBookName = sc.nextLine();
+
                     AddressBook addressBookObjectForCreation = new AddressBook();
                     dictionaryObject.addressBookDictionary.put(addressBookName, addressBookObjectForCreation);
+
+                    Path newBookPath = Paths.get(addressBookPath + "/" + addressBookName + ".txt");
+                    try {
+                        Files.createFile(newBookPath);
+                    } catch (IOException e) {
+                    }
+
                     break;
                 case 2:
                     System.out.println("Enter name of Address Book: ");
                     sc.nextLine();
                     String addressBookNameToOperate = sc.nextLine();
-                    AddressBook addressBookObjectForOperations = dictionaryObject.addressBookDictionary.get(addressBookNameToOperate);
+                    AddressBook addressBookObjectForOperations = dictionaryObject.addressBookDictionary
+                            .get(addressBookNameToOperate);
                     try {
                         addressBookObjectForOperations.addressBookOperations(addressBookNameToOperate);
                         System.out.println("Exited Address Book -> " + addressBookNameToOperate);
                     } catch (NullPointerException e1) {
-                        System.out.println("Address Book -> " + addressBookNameToOperate + " doesn't exist in the Dictionary");
+                        System.out.println(
+                                "Address Book -> " + addressBookNameToOperate + " doesn't exist in the Dictionary");
                     }
                     break;
                 case 3:
@@ -81,10 +106,14 @@ public class AddressBookMain {
 
                     if (dictionaryObject.addressBookDictionary.containsKey(addressBooknameForDeletion)) {
                         dictionaryObject.addressBookDictionary.remove(addressBooknameForDeletion);
+                        Path bookPath = Paths.get(addressBookPath + "/" + addressBooknameForDeletion + ".txt");
+                        File file = bookPath.toFile();
+                        file.delete();
                         System.out.println("Address Book Deleted");
                         System.out.println();
                     } else {
-                        System.out.println("Address Book -> " + addressBooknameForDeletion + " doesn't exist in the Dictionary");
+                        System.out.println(
+                                "Address Book -> " + addressBooknameForDeletion + " doesn't exist in the Dictionary");
                     }
                     break;
                 case 4:
@@ -93,7 +122,8 @@ public class AddressBookMain {
                     switch (option) {
                         case "y":
                             System.out.println();
-                            for (Map.Entry<String, AddressBook> dictionaryInteratorObject : dictionaryObject.addressBookDictionary.entrySet()) {
+                            for (Map.Entry<String, AddressBook> dictionaryInteratorObject : dictionaryObject.addressBookDictionary
+                                    .entrySet()) {
                                 System.out.println();
                                 System.out.println("Address Book -> " + dictionaryInteratorObject.getKey());
                                 dictionaryInteratorObject.getValue().displayAddressBook();
@@ -105,12 +135,14 @@ public class AddressBookMain {
                             System.out.print("Enter name of Address Book to be displayed: ");
                             String addressBooknameForDisplay = sc.nextLine();
                             try {
-                                AddressBook addressBookObjectForDisplay = dictionaryObject.addressBookDictionary.get(addressBooknameForDisplay);
+                                AddressBook addressBookObjectForDisplay = dictionaryObject.addressBookDictionary
+                                        .get(addressBooknameForDisplay);
                                 addressBookObjectForDisplay.displayAddressBook();
                                 System.out.println("Address Book -> " + addressBooknameForDisplay);
                                 System.out.println();
                             } catch (NullPointerException e2) {
-                                System.out.println("Address Book -> " + addressBooknameForDisplay + " doesn't exist in the Dictionary");
+                                System.out.println(
+                                        "Address Book -> " + addressBooknameForDisplay + " doesn't exist in the Dictionary");
                             }
                             break;
                         default:
@@ -129,10 +161,9 @@ public class AddressBookMain {
                         for (String city : dictionaryObject.cityList) {
                             String key = city;
                             HashSet<String> value = new HashSet<String>();
-                            dictionaryObject.addressBookDictionary.entrySet()
-                                    .forEach(addressBookIterator -> {
-                                        value.addAll(addressBookIterator.getValue().searchContactByCity(key));
-                                    });
+                            dictionaryObject.addressBookDictionary.entrySet().forEach(addressBookIterator -> {
+                                value.addAll(addressBookIterator.getValue().searchContactByCity(key));
+                            });
                             dictionaryObject.allContactsByCity.put(key, value);
                             dictionaryObject.countContactsByCity.put(key, value.size());
                         }
@@ -145,10 +176,9 @@ public class AddressBookMain {
                         for (String state : dictionaryObject.stateList) {
                             String key = state;
                             HashSet<String> value = new HashSet<String>();
-                            dictionaryObject.addressBookDictionary.entrySet()
-                                    .forEach(addressBookIterator -> {
-                                        value.addAll(addressBookIterator.getValue().searchContactByState(key));
-                                    });
+                            dictionaryObject.addressBookDictionary.entrySet().forEach(addressBookIterator -> {
+                                value.addAll(addressBookIterator.getValue().searchContactByState(key));
+                            });
                             dictionaryObject.allContactsByState.put(key, value);
                             dictionaryObject.countContactsByState.put(key, value.size());
                         }
@@ -168,5 +198,6 @@ public class AddressBookMain {
                     System.out.println();
             }
         }
+
     }
 }
