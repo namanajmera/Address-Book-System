@@ -1,5 +1,7 @@
 import com.opencsv.bean.CsvBindByName;
+
 public class Contacts {
+
     @CsvBindByName(column = "First Name")
     private String firstName;
 
@@ -23,7 +25,6 @@ public class Contacts {
 
     @CsvBindByName(column = "Email")
     private String email;
-
 
     public Contacts() {
     }
@@ -124,4 +125,5 @@ public class Contacts {
         Contacts person = (Contacts) o;
         return firstName.equals(person.firstName) && lastName.equals(person.lastName);
     }
+
 }

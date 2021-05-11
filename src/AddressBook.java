@@ -15,6 +15,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 public class AddressBook {
     public static final String ADRESS_BOOK_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\Files";
     public static final String CSV_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\CSVFiles";
+    public static final String JSON_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\JSONFiles";
     public static final Scanner SCANNER = new Scanner(System.in);
     private List<Contacts> addressBook;
     private HashSet<String> contactsByCity;
@@ -23,7 +24,7 @@ public class AddressBook {
     private ArrayList<String> state;
 
     public enum IOservice {
-        CONSOLE_IO, FILE_IO, CSV_IO
+        CONSOLE_IO, FILE_IO, CSV_IO, JSON_IO
     }
 
     public AddressBook() {
@@ -158,6 +159,7 @@ public class AddressBook {
             throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
         Path addressBookFilePath = Paths.get(ADRESS_BOOK_FILES + "/" + addressBookNameToOperate + ".txt");
         Path csvFilePath = Paths.get(CSV_FILES + "/" + addressBookNameToOperate + ".csv");
+        Path jsonFilePath = Paths.get(JSON_FILES + "/" + addressBookNameToOperate + ".json");
         System.out.println("Entered Address Book -> " + addressBookNameToOperate);
 
         boolean operate = true;
@@ -173,7 +175,7 @@ public class AddressBook {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO");
+                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO\n4.JSON_IO");
                     int ioChoice = SCANNER.nextInt();
                     if (ioChoice == 1)
                         addContactToAddressBook(createContact());
@@ -183,6 +185,9 @@ public class AddressBook {
                     } else if (ioChoice == 3) {
                         AddressBookCSVIOservice csvReadObject = new AddressBookCSVIOservice(csvFilePath);
                         addressBook = csvReadObject.readDataFromCSVFile();
+                    } else if (ioChoice == 4) {
+                        AddressBookJSONIOservice jsonReadObject = new AddressBookJSONIOservice(jsonFilePath);
+                        addressBook = jsonReadObject.readDataFromJSONFile();
                     } else
                         System.out.println("Invalid IO choice selected");
                     break;
@@ -218,7 +223,7 @@ public class AddressBook {
                         System.out.println("Invalid parameter for sorting selected!");
                     break;
                 case 5:
-                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO");
+                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO\n4.JSON_IO");
                     int choiceOfIO = SCANNER.nextInt();
                     if (choiceOfIO == 1)
                         displayAddressBook();
@@ -228,6 +233,9 @@ public class AddressBook {
                     } else if (choiceOfIO == 3) {
                         AddressBookCSVIOservice csvWriteObject = new AddressBookCSVIOservice(csvFilePath);
                         csvWriteObject.writeDataInCSVFile(addressBook);
+                    } else if (choiceOfIO == 4) {
+                        AddressBookJSONIOservice jsonWriteObject = new AddressBookJSONIOservice(jsonFilePath);
+                        jsonWriteObject.writeDataInJSONFile(addressBook);
                     } else
                         System.out.println("Invalid IO choice");
                     break;
@@ -248,20 +256,18 @@ public class AddressBook {
     }
 
     public void sortByCity() {
-        addressBook =  addressBook.stream().sorted(Comparator.comparing(Contacts::getCity))
-                .collect(Collectors.toList());
+        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getCity)).collect(Collectors.toList());
         System.out.println("Address Book sorted by City");
     }
 
     public void sortByState() {
-        addressBook =  addressBook.stream().sorted(Comparator.comparing(Contacts::getState))
+        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getState))
                 .collect(Collectors.toList());
         System.out.println("Address Book sorted by State");
     }
 
     public void sortByZip() {
-        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getZip))
-                .collect(Collectors.toList());
+        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getZip)).collect(Collectors.toList());
         System.out.println("Address Book sorted by Zip");
     }
 

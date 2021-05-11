@@ -1,22 +1,23 @@
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.List;
 import java.util.Scanner;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 public class AddressBookMain {
+
     public static final Scanner SCANNER = new Scanner(System.in);
     public static final String ADRESS_BOOK_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\Files";
     public static final String CSV_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\CSVFiles";
+    public static final String JSON_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\JSONFiles";
+
     private Map<String, AddressBook> addressBookDictionary;
 
     private Map<String, HashSet<String>> allContactsByCity;
@@ -39,10 +40,11 @@ public class AddressBookMain {
     public void initializeDictionary() {
         this.addressBookDictionary = new HashMap<String, AddressBook>();
         Path dictionaryPath = Paths.get(ADRESS_BOOK_FILES);
-        File[] addressBookFiles=dictionaryPath.toFile().listFiles();
-        for(File file:addressBookFiles) {
-            AddressBookFileIOService fileReadObject=new AddressBookFileIOService(file.toPath());
-            this.addressBookDictionary.put(file.getName().replaceFirst("[.][^.]+$", ""), new AddressBook(fileReadObject.readData()));
+        File[] addressBookFiles = dictionaryPath.toFile().listFiles();
+        for (File file : addressBookFiles) {
+            AddressBookFileIOService fileReadObject = new AddressBookFileIOService(file.toPath());
+            this.addressBookDictionary.put(file.getName().replaceFirst("[.][^.]+$", ""),
+                    new AddressBook(fileReadObject.readData()));
         }
     }
 
@@ -58,10 +60,12 @@ public class AddressBookMain {
         });
     }
 
-    public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+    public static void main(String[] args)
+            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
         Path addressBookPath = Paths.get(ADRESS_BOOK_FILES);
-        Path csvPath=Paths.get(CSV_FILES);
+        Path csvPath = Paths.get(CSV_FILES);
+        Path jsonPath = Paths.get(JSON_FILES);
         AddressBookMain dictionaryObject = new AddressBookMain();
         boolean operation = true;
         while (operation) {
@@ -84,11 +88,14 @@ public class AddressBookMain {
                     dictionaryObject.addressBookDictionary.put(addressBookName, addressBookObjectForCreation);
 
                     Path newBookPath = Paths.get(addressBookPath + "/" + addressBookName + ".txt");
-                    Path newCsvFilePath=Paths.get(csvPath+ "/" + addressBookName + ".csv");
+                    Path newCsvFilePath = Paths.get(csvPath + "/" + addressBookName + ".csv");
+                    Path newJsonFilePath = Paths.get(jsonPath + "/" + addressBookName + ".json");
                     try {
                         Files.createFile(newBookPath);
                         Files.createFile(newCsvFilePath);
-                    } catch (IOException e) {}
+                        Files.createFile(newJsonFilePath);
+                    } catch (IOException e) {
+                    }
 
                     break;
                 case 2:
@@ -113,7 +120,7 @@ public class AddressBookMain {
                     if (dictionaryObject.addressBookDictionary.containsKey(addressBooknameForDeletion)) {
                         dictionaryObject.addressBookDictionary.remove(addressBooknameForDeletion);
                         Path bookPath = Paths.get(addressBookPath + "/" + addressBooknameForDeletion + ".txt");
-                        File file=bookPath.toFile();
+                        File file = bookPath.toFile();
                         file.delete();
                         System.out.println("Address Book Deleted");
                         System.out.println();
