@@ -31,14 +31,14 @@ public class AddressBookFileIOService {
         try {
             Files.lines(addressBookPath).map(line -> line.trim()).forEach(line -> {
                 String[] data = line.split("[a-zA-Z ]+ : ");
-                String fullName = data[1].trim();
-                String[] name = fullName.split(" ");
-                String address = data[2].trim();
-                String city = data[3].trim();
-                String state = data[4].trim();
-                int zip = Integer.parseInt(data[5].trim());
-                String phoneNumber = data[6].trim();
-                String email = data[7].trim();
+                String fullName=data[1].trim();
+                String[] name=fullName.split(" ");
+                String address=data[2].trim();
+                String city=data[3].trim();
+                String state=data[4].trim();
+                String zip=data[5].trim();
+                String phoneNumber=data[6].trim();
+                String email=data[7].trim();
                 Contacts newContact = new Contacts(name[0], name[1], address, city, state, zip, phoneNumber, email);
                 contactReadList.add(newContact);
             });

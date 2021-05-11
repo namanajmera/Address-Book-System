@@ -1,3 +1,6 @@
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +14,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookMain {
+    public static final Scanner SCANNER = new Scanner(System.in);
     public static final String ADRESS_BOOK_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\Files";
+    public static final String CSV_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\CSVFiles";
     private Map<String, AddressBook> addressBookDictionary;
 
     private Map<String, HashSet<String>> allContactsByCity;
@@ -34,9 +39,9 @@ public class AddressBookMain {
     public void initializeDictionary() {
         this.addressBookDictionary = new HashMap<String, AddressBook>();
         Path dictionaryPath = Paths.get(ADRESS_BOOK_FILES);
-        File[] addressBookFiles = dictionaryPath.toFile().listFiles();
-        for (File file : addressBookFiles) {
-            AddressBookFileIOService fileReadObject = new AddressBookFileIOService(file.toPath());
+        File[] addressBookFiles=dictionaryPath.toFile().listFiles();
+        for(File file:addressBookFiles) {
+            AddressBookFileIOService fileReadObject=new AddressBookFileIOService(file.toPath());
             this.addressBookDictionary.put(file.getName().replaceFirst("[.][^.]+$", ""), new AddressBook(fileReadObject.readData()));
         }
     }
@@ -53,10 +58,10 @@ public class AddressBookMain {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 
         Path addressBookPath = Paths.get(ADRESS_BOOK_FILES);
-        Scanner sc = new Scanner(System.in);
+        Path csvPath=Paths.get(CSV_FILES);
         AddressBookMain dictionaryObject = new AddressBookMain();
         boolean operation = true;
         while (operation) {
@@ -67,28 +72,29 @@ public class AddressBookMain {
             System.out.println("5. Display Person");
             System.out.println("6. Exit");
             System.out.println("Enter your choice : ");
-            int choice = sc.nextInt();
+            int choice = SCANNER.nextInt();
 
             switch (choice) {
                 case 1:
                     System.out.println("Enter name of Address Book: ");
-                    sc.nextLine();
-                    String addressBookName = sc.nextLine();
+                    SCANNER.nextLine();
+                    String addressBookName = SCANNER.nextLine();
 
                     AddressBook addressBookObjectForCreation = new AddressBook();
                     dictionaryObject.addressBookDictionary.put(addressBookName, addressBookObjectForCreation);
 
                     Path newBookPath = Paths.get(addressBookPath + "/" + addressBookName + ".txt");
+                    Path newCsvFilePath=Paths.get(csvPath+ "/" + addressBookName + ".csv");
                     try {
                         Files.createFile(newBookPath);
-                    } catch (IOException e) {
-                    }
+                        Files.createFile(newCsvFilePath);
+                    } catch (IOException e) {}
 
                     break;
                 case 2:
                     System.out.println("Enter name of Address Book: ");
-                    sc.nextLine();
-                    String addressBookNameToOperate = sc.nextLine();
+                    SCANNER.nextLine();
+                    String addressBookNameToOperate = SCANNER.nextLine();
                     AddressBook addressBookObjectForOperations = dictionaryObject.addressBookDictionary
                             .get(addressBookNameToOperate);
                     try {
@@ -101,13 +107,13 @@ public class AddressBookMain {
                     break;
                 case 3:
                     System.out.println("Enter name of Address Book: ");
-                    sc.nextLine();
-                    String addressBooknameForDeletion = sc.nextLine();
+                    SCANNER.nextLine();
+                    String addressBooknameForDeletion = SCANNER.nextLine();
 
                     if (dictionaryObject.addressBookDictionary.containsKey(addressBooknameForDeletion)) {
                         dictionaryObject.addressBookDictionary.remove(addressBooknameForDeletion);
                         Path bookPath = Paths.get(addressBookPath + "/" + addressBooknameForDeletion + ".txt");
-                        File file = bookPath.toFile();
+                        File file=bookPath.toFile();
                         file.delete();
                         System.out.println("Address Book Deleted");
                         System.out.println();
@@ -118,7 +124,7 @@ public class AddressBookMain {
                     break;
                 case 4:
                     System.out.print("Display All Address Book in the Dictionary (y/n) : ");
-                    String option = sc.next();
+                    String option = SCANNER.next();
                     switch (option) {
                         case "y":
                             System.out.println();
@@ -130,10 +136,10 @@ public class AddressBookMain {
                             }
                             break;
                         case "n":
-                            sc.nextLine();
+                            SCANNER.nextLine();
                             System.out.println();
                             System.out.print("Enter name of Address Book to be displayed: ");
-                            String addressBooknameForDisplay = sc.nextLine();
+                            String addressBooknameForDisplay = SCANNER.nextLine();
                             try {
                                 AddressBook addressBookObjectForDisplay = dictionaryObject.addressBookDictionary
                                         .get(addressBooknameForDisplay);
@@ -155,7 +161,7 @@ public class AddressBookMain {
                     System.out.println("3.Show Count by City");
                     System.out.println("4.Show Count by State");
                     System.out.println("Enter your choice :");
-                    int showPersonChoice = sc.nextInt();
+                    int showPersonChoice = SCANNER.nextInt();
                     if (showPersonChoice == 1 || showPersonChoice == 3) {
                         dictionaryObject.getAllCities();
                         for (String city : dictionaryObject.cityList) {
@@ -198,6 +204,5 @@ public class AddressBookMain {
                     System.out.println();
             }
         }
-
     }
 }

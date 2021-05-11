@@ -1,26 +1,29 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
 public class AddressBook {
     public static final String ADRESS_BOOK_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\Files";
+    public static final String CSV_FILES = "E:\\Ebook\\BridgeLabz\\Assignment\\Address Book System\\CSVFiles";
+    public static final Scanner SCANNER = new Scanner(System.in);
     private List<Contacts> addressBook;
     private HashSet<String> contactsByCity;
     private HashSet<String> contactsByState;
     private ArrayList<String> city;
     private ArrayList<String> state;
 
-
     public enum IOservice {
-        CONSOLE_IO, FILE_IO
+        CONSOLE_IO, FILE_IO, CSV_IO
     }
 
     public AddressBook() {
@@ -51,7 +54,6 @@ public class AddressBook {
     }
 
     public void editContact(String fullName) {
-        Scanner sc = new Scanner(System.in);
         boolean flag = true;
         for (Contacts contact : addressBook) {
             if (fullName.toUpperCase().equals((contact.getFullName()).toUpperCase())) {
@@ -62,33 +64,33 @@ public class AddressBook {
                 System.out.println("4. Zip");
                 System.out.println("5. Phone Number");
                 System.out.println("6. Email");
-                int choice = sc.nextInt();
+                int choice = SCANNER.nextInt();
                 switch (choice) {
                     case 1:
                         System.out.println("Enter new address:");
-                        sc.nextLine();
-                        contact.setAddress(sc.nextLine());
+                        SCANNER.nextLine();
+                        contact.setAddress(SCANNER.nextLine());
                         break;
                     case 2:
                         System.out.println("Enter new city:");
-                        contact.setCity(sc.next());
+                        contact.setCity(SCANNER.next());
                         break;
                     case 3:
                         System.out.println("Enter new state:");
-                        sc.nextLine();
-                        contact.setState(sc.nextLine());
+                        SCANNER.nextLine();
+                        contact.setState(SCANNER.nextLine());
                         break;
                     case 4:
                         System.out.println("Enter new zip:");
-                        contact.setZip(sc.nextInt());
+                        contact.setZip(SCANNER.next());
                         break;
                     case 5:
                         System.out.println("Enter new phone number:");
-                        contact.setPhoneNumber(sc.next());
+                        contact.setPhoneNumber(SCANNER.next());
                         break;
                     case 6:
                         System.out.println("Enter new email:");
-                        contact.setEmail(sc.next());
+                        contact.setEmail(SCANNER.next());
                         break;
                     default:
                         System.out.println("INVALID choice");
@@ -117,25 +119,24 @@ public class AddressBook {
     }
 
     public Contacts createContact() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Enter First Name:");
-        String firstName = sc.next();
+        String firstName = SCANNER.next();
         System.out.println("Enter Last Name:");
-        String lastName = sc.next();
+        String lastName = SCANNER.next();
         System.out.println("Enter address:");
-        sc.nextLine();
-        String address = sc.nextLine();
+        SCANNER.nextLine();
+        String address = SCANNER.nextLine();
         System.out.println("Enter city:");
-        String city = sc.next();
+        String city = SCANNER.next();
         System.out.println("Enter state:");
-        sc.nextLine();
-        String state = sc.nextLine();
+        SCANNER.nextLine();
+        String state = SCANNER.nextLine();
         System.out.println("Enter zip:");
-        int zip = sc.nextInt();
+        String zip = SCANNER.next();
         System.out.println("Enter phone No.:");
-        String phoneNumber = sc.next();
+        String phoneNumber = SCANNER.next();
         System.out.println("Enter email address:");
-        String email = sc.next();
+        String email = SCANNER.next();
         return (new Contacts(firstName, lastName, address, city, state, zip, phoneNumber, email));
     }
 
@@ -153,9 +154,10 @@ public class AddressBook {
         return contactsByState;
     }
 
-    public void addressBookOperations(String addressBookNameToOperate) {
+    public void addressBookOperations(String addressBookNameToOperate)
+            throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
         Path addressBookFilePath = Paths.get(ADRESS_BOOK_FILES + "/" + addressBookNameToOperate + ".txt");
-        Scanner sc = new Scanner(System.in);
+        Path csvFilePath = Paths.get(CSV_FILES + "/" + addressBookNameToOperate + ".csv");
         System.out.println("Entered Address Book -> " + addressBookNameToOperate);
 
         boolean operate = true;
@@ -167,30 +169,33 @@ public class AddressBook {
             System.out.println("5. Write Address Book");
             System.out.println("6. Exit");
             System.out.println("Enter your choice : ");
-            int choice = sc.nextInt();
+            int choice = SCANNER.nextInt();
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO");
-                    int ioChoice = sc.nextInt();
+                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO");
+                    int ioChoice = SCANNER.nextInt();
                     if (ioChoice == 1)
                         addContactToAddressBook(createContact());
                     else if (ioChoice == 2) {
                         AddressBookFileIOService fileReadObject = new AddressBookFileIOService(addressBookFilePath);
                         addressBook = fileReadObject.readData();
+                    } else if (ioChoice == 3) {
+                        AddressBookCSVIOservice csvReadObject = new AddressBookCSVIOservice(csvFilePath);
+                        addressBook = csvReadObject.readDataFromCSVFile();
                     } else
                         System.out.println("Invalid IO choice selected");
                     break;
                 case 2:
                     System.out.println("Enter the Full Name : ");
-                    sc.nextLine();
-                    String fullName = sc.nextLine();
+                    SCANNER.nextLine();
+                    String fullName = SCANNER.nextLine();
                     editContact(fullName);
                     break;
                 case 3:
                     System.out.println("Enter the Full Name : ");
-                    sc.nextLine();
-                    String name = sc.nextLine();
+                    SCANNER.nextLine();
+                    String name = SCANNER.nextLine();
                     deleteContact(name);
                     break;
                 case 4:
@@ -200,7 +205,7 @@ public class AddressBook {
                     System.out.println("3.State");
                     System.out.println("4.Zip");
                     System.out.println("Enter your choice : ");
-                    int sortChoice = sc.nextInt();
+                    int sortChoice = SCANNER.nextInt();
                     if (sortChoice == 1)
                         sortByPerson();
                     else if (sortChoice == 2)
@@ -213,13 +218,16 @@ public class AddressBook {
                         System.out.println("Invalid parameter for sorting selected!");
                     break;
                 case 5:
-                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO");
-                    int choiceOfIO = sc.nextInt();
+                    System.out.println("Enter IO Service : \n1.CONSOLE_IO\n2.FILE_IO\n3.CSV_IO");
+                    int choiceOfIO = SCANNER.nextInt();
                     if (choiceOfIO == 1)
                         displayAddressBook();
                     else if (choiceOfIO == 2) {
                         AddressBookFileIOService fileWriteObject = new AddressBookFileIOService(addressBookFilePath);
                         fileWriteObject.writeData(addressBook);
+                    } else if (choiceOfIO == 3) {
+                        AddressBookCSVIOservice csvWriteObject = new AddressBookCSVIOservice(csvFilePath);
+                        csvWriteObject.writeDataInCSVFile(addressBook);
                     } else
                         System.out.println("Invalid IO choice");
                     break;
@@ -234,25 +242,25 @@ public class AddressBook {
 
     //	SORTING
     public void sortByPerson() {
-        addressBook = addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getFullName))
+        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getFullName))
                 .collect(Collectors.toList());
         System.out.println("Address Book sorted by Person Name");
     }
 
     public void sortByCity() {
-        addressBook = addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getCity))
+        addressBook =  addressBook.stream().sorted(Comparator.comparing(Contacts::getCity))
                 .collect(Collectors.toList());
         System.out.println("Address Book sorted by City");
     }
 
     public void sortByState() {
-        addressBook = addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getState))
+        addressBook =  addressBook.stream().sorted(Comparator.comparing(Contacts::getState))
                 .collect(Collectors.toList());
         System.out.println("Address Book sorted by State");
     }
 
     public void sortByZip() {
-        addressBook = addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getZip))
+        addressBook = addressBook.stream().sorted(Comparator.comparing(Contacts::getZip))
                 .collect(Collectors.toList());
         System.out.println("Address Book sorted by Zip");
     }
