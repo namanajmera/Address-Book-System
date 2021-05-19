@@ -12,4 +12,17 @@ public class AddressBookServiceTest {
         int countOfEntriesRetrieved = serviceObject.sizeOfContactList();
         Assertions.assertEquals(0, countOfEntriesRetrieved);
     }
+
+    @Test
+    public void givenNewEmailForContact_WhenUpdated_ShouldSyncWithDB() {
+        try {
+            AddressBookService serviceObject = new AddressBookService();
+            serviceObject.readContactData(AddressBookService.IOService.DB_IO);
+            serviceObject.updateContactEmail("Aditya", "Verma", "addressbook@capgemini.com");
+            boolean result = serviceObject.checkContactDataInSyncWithDB("Aditya", "Verma");
+            Assertions.assertTrue(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
