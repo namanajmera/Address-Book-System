@@ -22,8 +22,8 @@ public class AddressBookServiceTest {
         try {
             AddressBookService serviceObject = new AddressBookService();
             serviceObject.readContactData(AddressBookService.IOService.DB_IO);
-            serviceObject.updateContactEmail("Aditya", "Verma", "addressbook@capgemini.com");
-            boolean result = serviceObject.checkContactDataInSyncWithDB("Aditya", "Verma");
+            serviceObject.updateContactEmail("Naman", "Ajmera", "naman.ajmera.com");
+            boolean result = serviceObject.checkContactDataInSyncWithDB("Naman", "Ajmera");
             Assertions.assertTrue(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,5 +50,19 @@ public class AddressBookServiceTest {
         int countPerState = serviceObject.getCountByState(AddressBookService.IOService.DB_IO, "Uttar Pradesh");
         boolean result = countPerCity == 4 && countPerState == 6;
         Assertions.assertTrue(result);
+    }
+
+    @Test
+    public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
+        try {
+            AddressBookService serviceObject = new AddressBookService();
+            serviceObject.readContactData(AddressBookService.IOService.DB_IO);
+            serviceObject.addContactToAddressBook("Shreshtra", "Balaji", "4/14 Airport Road", "Mumbai", "Maharashtra", 245245, "addressbooknew@capgemini.com",
+                    "9898989898", "TemporaryBook", "Temp");
+            boolean result = serviceObject.checkContactDataInSyncWithDB("Shreshtra", "Balaji");
+            Assertions.assertTrue(result);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
