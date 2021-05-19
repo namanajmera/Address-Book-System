@@ -5,7 +5,10 @@ import com.naman.modal.Contacts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public class AddressBookServiceTest {
@@ -64,5 +67,27 @@ public class AddressBookServiceTest {
         }catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void givenMultipleContacts_WhenAddedToDB_ShouldMatchContactCount() throws InterruptedException {
+        AddressBookService serviceObject = new AddressBookService();
+        serviceObject.readContactData(AddressBookService.IOService.DB_IO);
+        Contacts[] arrayOfContacts = {
+                new Contacts("Alisha", "Kori","89/11 Deep Road", "Mumbai", "Maharashtra", 456281, "addressbooknew1@capgemini.com",
+                        "7777777777","TemporaryBook","Temp"),
+                new Contacts("Karina", "Sharma","8/88 Karim Road", "Mumbai", "Maharashtra", 454561, "addressbooknew2@capgemini.com",
+                        "8888888888","TemporaryBook","Temp"),
+                new Contacts("Mori", "Singh","4/18 Kirana Nagar", "Bhopal", "Madhya Pradesh", 264561, "addressbooknew3@capgemini.com",
+                        "6666666666","TemporaryBook","Temp"),
+                new Contacts("Shila", "Dixit","2/120 Sadar Colony", "Jabalpur", "Madhya Pradesh", 482001, "addressbooknew4@capgemini.com",
+                        "8989454599","TemporaryBook","Temp"),
+        };
+        Instant start = Instant.now();
+        serviceObject.addContactListToAddressBook(Arrays.asList(arrayOfContacts));
+        Instant end = Instant.now();
+        System.out.println("Duration with Threading : " + Duration.between(start, end));
+
+        Assertions.assertEquals(15, serviceObject.sizeOfContactList());
     }
 }
