@@ -8,28 +8,16 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-    }
-    test {
-        java {
-            srcDir 'src/new-test/test'
-        }
-    }
-}
+
 dependencies {
-    compile 'junit:junit:4.12'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    compile "com.opencsv:opencsv:4.0"
+    implementation group: 'com.opencsv', name: 'opencsv', version: '5.4'
+    implementation group: 'org.json', name: 'json', version: '20210307'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.25'
 }
 
 test {
     useJUnitPlatform()
 }
-
-

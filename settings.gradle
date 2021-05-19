@@ -1,3 +1,2 @@
-include 'test'
-include 'main'
+rootProject.name = 'Address Book System2'
 
