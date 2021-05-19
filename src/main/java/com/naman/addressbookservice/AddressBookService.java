@@ -7,6 +7,7 @@ import com.naman.modal.Contacts;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookService {
@@ -75,5 +76,29 @@ public class AddressBookService {
             }
         }
         return null;
+    }
+
+    public int getCountByCity(IOService ioType, String city) {
+        if (ioType.equals(IOService.DB_IO)) {
+            try {
+                Map<String, Integer> cityToContactCountMap = addressBookDBService.getCountByCity();
+                return cityToContactCountMap.get(city);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    public int getCountByState(IOService ioType, String state) {
+        if (ioType.equals(IOService.DB_IO)) {
+            try {
+                Map<String, Integer> stateToContactCountMap = addressBookDBService.getCountByState();
+                return stateToContactCountMap.get(state);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
     }
 }

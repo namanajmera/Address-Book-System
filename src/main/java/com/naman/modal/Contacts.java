@@ -33,7 +33,7 @@ public class Contacts {
 
     private List<String> phoneList;
 
-    private Map<String,String> addressBooks;
+    private Map<String, String> addressBooks;
 
     public Contacts() {
     }
@@ -49,7 +49,6 @@ public class Contacts {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
-
 
 
     public Contacts(String firstName, String lastName, String address, String city, String state, int zip, String email,

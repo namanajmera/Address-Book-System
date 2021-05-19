@@ -40,4 +40,15 @@ public class AddressBookServiceTest {
         List<Contacts> employeePayrollData = serviceObject.readContactsForDateRange(AddressBookService.IOService.DB_IO, startDate, endDate);
         Assertions.assertEquals(4, employeePayrollData.size());
     }
+
+    @Test
+    public void givenCityAndState_WhenRetrieved_ShouldMatchContactsCountPerCityAndPerState() {
+
+        AddressBookService serviceObject = new AddressBookService();
+        serviceObject.readContactData(AddressBookService.IOService.DB_IO);
+        int countPerCity = serviceObject.getCountByCity(AddressBookService.IOService.DB_IO, "Lucknow");
+        int countPerState = serviceObject.getCountByState(AddressBookService.IOService.DB_IO, "Uttar Pradesh");
+        boolean result = countPerCity == 4 && countPerState == 6;
+        Assertions.assertTrue(result);
+    }
 }
