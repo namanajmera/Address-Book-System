@@ -4,6 +4,7 @@ import com.naman.exception.DBException;
 import com.naman.modal.Contacts;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +19,15 @@ public class AddressBookDBIOService {
     }
 
     public static AddressBookDBIOService getInstatnce() {
-        if (addressBookDBService == null)
+        if(addressBookDBService == null)
             addressBookDBService = new AddressBookDBIOService();
         return addressBookDBService;
     }
 
     private Connection establishConnection() throws SQLException {
-        String jdbcURL = "jdbc:mysql://localhost:3307/address_book_service";
+        String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service";
         String userName = "root";
-        String password = "Spider@6426";
+        String password = "First12@";
         System.out.println("Establishing connection to database : " + jdbcURL);
         return DriverManager.getConnection(jdbcURL, userName, password);
     }
@@ -37,14 +38,14 @@ public class AddressBookDBIOService {
             Connection connection = this.establishConnection();
             System.out.println("Connection is successfull!!! " + connection);
             this.addressBookDataStatement = connection.prepareStatement(sql);
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             throw new DBException("Cannot establish connection", DBException.ExceptionType.CONNECTION_FAIL);
         }
     }
 
     public List<Contacts> getEmplyoeePayrollDataUsingName(String firstName, String lastName) throws DBException {
         List<Contacts> contactDataList = null;
-        if (this.addressBookDataStatement == null)
+        if(this.addressBookDataStatement == null)
             this.prepareStatementForContactData();
         try {
             addressBookDataStatement.setString(1, firstName);
@@ -73,7 +74,7 @@ public class AddressBookDBIOService {
             contactDataList = this.getContactDataUsingResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBException("Cannot establish connection", DBException.ExceptionType.CONNECTION_FAIL);
+            throw new DBException("Cannot establish connection",DBException.ExceptionType.CONNECTION_FAIL);
         }
         return contactDataList;
     }
@@ -96,7 +97,7 @@ public class AddressBookDBIOService {
                 String sql = String.format("select contact.first_name as first_name, contact.last_name as last_name, contact_number.phone as phone "
                         + "from contact "
                         + "inner join contact_number on contact.first_name = contact_number.first_name and contact.last_name = contact_number.last_name "
-                        + "where contact.first_name = '%s' and contact.last_name = '%s';", firstName, lastName);
+                        + "where contact.first_name = '%s' and contact.last_name = '%s';", firstName,lastName);
                 Statement statement = connection.createStatement();
                 ResultSet resultSetForContactNumber = statement.executeQuery(sql);
                 while (resultSetForContactNumber.next()) {
@@ -109,14 +110,15 @@ public class AddressBookDBIOService {
                         + "from contact "
                         + "inner join contact_book on contact.first_name = contact_book.first_name and contact.last_name = contact_book.last_name "
                         + "inner join address_book on contact_book.type = address_book.type "
-                        + "where contact.first_name = '%s' and contact.last_name = '%s';", firstName, lastName);
+                        + "where contact.first_name = '%s' and contact.last_name = '%s';",firstName,lastName);
                 Statement statement = connection.createStatement();
                 ResultSet resultSetForAddressBookData = statement.executeQuery(sql);
                 while (resultSetForAddressBookData.next()) {
                     addressBooks.put(resultSetForAddressBookData.getString("address_book_name"), resultSetForAddressBookData.getString("type"));
                 }
             }
-            contactDataList.add(new Contacts(firstName, lastName, address, city, state, zip, email, phoneList, addressBooks));
+            contactDataList
+                    .add(new Contacts(firstName, lastName, address, city, state, zip, email, phoneList, addressBooks));
         }
         return contactDataList;
     }
@@ -130,5 +132,14 @@ public class AddressBookDBIOService {
         } catch (SQLException e) {
             throw new DBException("Cannot establish connection", DBException.ExceptionType.CONNECTION_FAIL);
         }
+    }
+
+    public List<Contacts> readContactsForDateRange(LocalDate startDate, LocalDate endDate) throws DBException {
+        String sql = String.format("select distinct contact.first_name as first_name, contact.last_name as last_name, contact.address as address, "
+                + "contact.city as city, contact.state as state, contact.zip as zip, contact.email as email "
+                + "from contact "
+                + "inner join contact_book on contact.first_name = contact_book.first_name and contact.last_name = contact_book.last_name "
+                + "where contact_book.date_added between '%s' and '%s' ;", Date.valueOf(startDate),Date.valueOf(endDate));
+        return this.getContactDataUsingDB(sql);
     }
 }

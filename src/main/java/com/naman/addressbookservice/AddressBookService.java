@@ -4,6 +4,7 @@ import com.naman.exception.DBException;
 import com.naman.ioservice.AddressBookDBIOService;
 import com.naman.modal.Contacts;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -51,10 +52,10 @@ public class AddressBookService {
 
     public void updateContactEmail(String firstName, String lastName, String email) throws DBException {
         int result = addressBookDBService.updateContactEmail(firstName, lastName, email);
-        if (result == 0)
+        if(result == 0)
             throw new DBException("Cannot update the employee payroll data", DBException.ExceptionType.UPDATE_ERROR);
         Contacts contactData = this.getContactData(firstName, lastName);
-        if (contactData != null)
+        if(contactData != null)
             contactData.setEmail(email);
         else
             throw new DBException("Cannot find the employee payroll data", DBException.ExceptionType.INVALID_PAYROLL_DATA);
@@ -63,5 +64,16 @@ public class AddressBookService {
     public boolean checkContactDataInSyncWithDB(String firstName, String lastName) throws DBException {
         List<Contacts> contactDataList = addressBookDBService.getEmplyoeePayrollDataUsingName(firstName, lastName);
         return contactDataList.get(0).equals(getContactData(firstName, lastName));
+    }
+
+    public List<Contacts> readContactsForDateRange(IOService ioType, LocalDate startDate, LocalDate endDate) {
+        if (ioType.equals(IOService.DB_IO)) {
+            try {
+                return addressBookDBService.readContactsForDateRange(startDate, endDate);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
