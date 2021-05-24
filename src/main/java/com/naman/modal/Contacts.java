@@ -95,10 +95,6 @@ public class Contacts {
         }
     }
 
-    public Contacts(String firstName, String lastName, String address, String city, String state, int zip, String email, List<String> phoneList, Map<String, String> addressBooks) {
-
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -226,12 +222,12 @@ public class Contacts {
         if (addressBookNameList == null) {
             if (other.addressBookNameList != null)
                 return false;
-        } else if (!addressBookNameList.equals(other.addressBookNameList))
+        } else if (!(new HashSet<>(addressBookNameList)).equals(new HashSet<>(other.addressBookNameList)))
             return false;
         if (addressBookTypeList == null) {
             if (other.addressBookTypeList != null)
                 return false;
-        } else if (!addressBookTypeList.equals(other.addressBookTypeList))
+        } else if (!(new HashSet<>(addressBookTypeList)).equals((new HashSet<>(other.addressBookTypeList))))
             return false;
         if (city == null) {
             if (other.city != null)
@@ -256,7 +252,7 @@ public class Contacts {
         if (phoneList == null) {
             if (other.phoneList != null)
                 return false;
-        } else if (!phoneList.equals(other.phoneList))
+        } else if (!(new HashSet<>(phoneList)).equals((new HashSet<>(other.phoneList))))
             return false;
         if (state == null) {
             if (other.state != null)

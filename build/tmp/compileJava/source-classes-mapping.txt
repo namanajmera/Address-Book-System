@@ -1,10 +1,10 @@
+com/naman/addressbook/AddressBookMain.java
+ com.naman.addressbook.AddressBookMain
 com/naman/addressbookservice/AddressBookService.java
  com.naman.addressbookservice.AddressBookService
  com.naman.addressbookservice.AddressBookService$IOService
 com/naman/ioservice/AddressBookDBIOService.java
  com.naman.ioservice.AddressBookDBIOService
-com/naman/addressbook/AddressBookMain.java
- com.naman.addressbook.AddressBookMain
 com/naman/ioservice/AddressBookCSVIOservice.java
  com.naman.ioservice.AddressBookCSVIOservice
 com/naman/modal/Contacts.java
@@ -14,8 +14,6 @@ com/naman/exception/DBException.java
  com.naman.exception.DBException$ExceptionType
 com/naman/ioservice/AddressBookFileIOService.java
  com.naman.ioservice.AddressBookFileIOService
-com/naman/modal/AddressBookData.java
- com.naman.modal.AddressBookData
 com/naman/ioservice/AddressBookJSONIOservice.java
  com.naman.ioservice.AddressBookJSONIOservice
 com/naman/addressbook/AddressBook.java
