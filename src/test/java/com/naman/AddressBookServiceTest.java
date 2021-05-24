@@ -119,6 +119,14 @@ public class AddressBookServiceTest {
         return request.post("/address-book");
     }
 
+    public Response updateContactEmailInJsonServer(Contacts contactData) {
+        String contactJson = new Gson().toJson(contactData);
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        request.body(contactJson);
+        return request.put("/address-book/" + contactData.getId());
+    }
+
     @Test
     public void givenContactDataInJsonServer_WhenRetrieved_ShouldMatchContactCount() {
         Contacts[] arrayOfContacts = getContactsList();
@@ -166,6 +174,26 @@ public class AddressBookServiceTest {
             long entries = serviceObject.sizeOfContactList();
             Assertions.assertEquals(20, entries);
         }catch (DBException e) {
+        }
+    }
+
+    @Test
+    public void givenNewEmailForContact_WhenUpdatedInJSONServer_ShouldMatch200ResponseAndSyncWithDB() {
+        Contacts[] arrayOfContacts = getContactsList();
+        AddressBookService serviceObject = new AddressBookService(Arrays.asList(arrayOfContacts));
+        try {
+            serviceObject.updateContactEmail("Warren", "Estacaldo", "updatedemail@gmail.com");
+            Contacts contactData = serviceObject.getContactData("Warren", "Estacaldo");
+
+            Response response = updateContactEmailInJsonServer(contactData);
+            int statusCode = response.getStatusCode();
+            Assertions.assertEquals(200, statusCode);
+
+            Contacts updatedContact = new Gson().fromJson(response.asString(), Contacts.class);
+            boolean result = serviceObject.checkContactDataInSyncWithDB(updatedContact.getFirstName(), updatedContact.getLastName());
+            Assertions.assertTrue(result);
+        }catch (DBException e) {
+            e.printStackTrace();
         }
     }
 }
