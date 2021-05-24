@@ -127,6 +127,12 @@ public class AddressBookServiceTest {
         return request.put("/address-book/" + contactData.getId());
     }
 
+    public Response deleteContactFromJsonServer(Contacts contactData) {
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        return request.delete("/address-book/" + contactData.getId());
+    }
+
     @Test
     public void givenContactDataInJsonServer_WhenRetrieved_ShouldMatchContactCount() {
         Contacts[] arrayOfContacts = getContactsList();
@@ -191,6 +197,27 @@ public class AddressBookServiceTest {
 
             Contacts updatedContact = new Gson().fromJson(response.asString(), Contacts.class);
             boolean result = serviceObject.checkContactDataInSyncWithDB(updatedContact.getFirstName(), updatedContact.getLastName());
+            Assertions.assertTrue(result);
+        }catch (DBException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenContact_WhenDeletedFromJSONServer_ShouldMatch200ResponseAndContactCountAndSyncWithDB() {
+        Contacts[] arrayOfContacts = getContactsList();
+        AddressBookService serviceObject = new AddressBookService(Arrays.asList(arrayOfContacts));
+        try {
+            Contacts contactData = serviceObject.getContactData("Warren", "Estacaldo");
+            Response response = deleteContactFromJsonServer(contactData);
+            int statusCode = response.getStatusCode();
+            Assertions.assertEquals(200, statusCode);
+
+            serviceObject.deleteContactData("Warren", "Estacaldo");
+            long entries = serviceObject.sizeOfContactList();
+            Assertions.assertEquals(19, entries);
+
+            boolean result = serviceObject.checkContactDataInSyncWithDB("Warren", "Estacaldo");
             Assertions.assertTrue(result);
         }catch (DBException e) {
             e.printStackTrace();

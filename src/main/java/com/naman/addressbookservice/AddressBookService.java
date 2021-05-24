@@ -144,4 +144,14 @@ public class AddressBookService {
                 newContact.getZip(), newContact.getEmail(), newContact.getPhoneList().get(0),
                 newContact.getAddressBookTypeList().get(0), newContact.getAddressBookNameList().get(0));
     }
+
+    public void deleteContactData(String firstName, String lastName) throws DBException {
+        int result = addressBookDBService.deleteContactData(firstName, lastName);
+        if(result == 0)
+            throw new DBException("Cannot update the employee payroll data", DBException.ExceptionType.UPDATE_ERROR);
+        Contacts contactToDelete = this.getContactData(firstName, lastName);
+        if(contactToDelete != null)		this.contactDataList.remove(contactToDelete);
+        else
+            throw new DBException("Cannot find the contact data in the list", DBException.ExceptionType.INVALID_CONTACT_DATA);
+    }
 }
